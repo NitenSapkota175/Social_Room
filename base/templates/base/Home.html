@@ -1,0 +1,16 @@
+{%extends 'main.html'%}
+
+{%load static %}
+{%block content%}
+            <h3><a href = "{%url 'Create_room' %}">Create Room</a></h3>    
+            <br>
+            {%for room in rooms%}
+                    <h3><a href="{%url 'room' room.id%}">{{room.name}}</a></h3>
+                    <a href = "{%url 'UpdateRoom' room.id%}"> Edit</a>
+                    <a href = "{%url 'DeleteRoom' room.id%}">DeleteRoom</a>
+                    <h3>{{room.description}}</h3>
+                   
+                    
+            {%endfor%}
+           
+{%endblock content%}

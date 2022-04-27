@@ -1,0 +1,43 @@
+{%extends 'main.html' %}
+
+
+{%block content %}
+{% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+<form action="" method = "POST">
+    {%csrf_token%}
+
+   
+    <br>
+    <label>Username</label>
+    <input name = 'username' type = "text">
+    <br>
+    <label>Email</label>
+    <input name = 'email'  type="email"  />
+        <br>
+
+    <label>Password1</label>
+    <input name = 'password1' type = "password">
+    <br>
+
+    <label>Password2</label>
+    <input name = 'password2' type = "password">
+    <br>
+
+
+    <input name = "submit" type = "submit" > 
+
+    <br>
+        <p>Already have an account?<a href = "{%url 'login_page' %}">click here</a></p>
+
+
+</form>
+
+{%endblock content %}

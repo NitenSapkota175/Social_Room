@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .profile-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+
+<h1>{{user.username}}</h1>
+<img src = '{{request.user.profile.profile_pic.url}}'>
+<div class="profile-container">
+    <div>
+        {%for r in rooms%}
+                {{room.name}}
+        
+        {%endfor%}
+    </div>
+
+    <div>
+       
+    </div>
+
+    <div>
+     
+    </div>
+</div>
+
+{% endblock content %}

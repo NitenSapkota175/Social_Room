@@ -1,0 +1,26 @@
+{%extends 'main.html' %}
+
+
+{%block content %}
+
+<br>
+<br>
+        <form action="" method = "POST">
+            {%csrf_token%}
+
+            <label>username</label>
+            <input name = 'username'  type="text"  />
+                <br>
+
+            <label>password</label>
+            <input name = 'password' type = "password">
+            <br>
+            <input name = "submit" type = "submit" > 
+
+
+        </form>
+        <p>forgot password?<a href = "{%url 'forgetpassword' %}">click here</a></p>
+        <p>Don't have an account?<a href = "{%url 'register_page' %}">click here</a></p>
+
+
+{%endblock content %}

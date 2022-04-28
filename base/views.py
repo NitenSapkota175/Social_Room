@@ -1,28 +1,54 @@
 import profile
 from tkinter import EXCEPTION
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django.contrib.auth.models import User
+from django.shortcuts import render,redirect,get_object_or_404
+from django.http import HttpResponseRedirect,HttpResponse
+
 from django.contrib import messages
 from rx import create
+from django.urls import reverse,reverse_lazy
 from tables import Description
-from . models import Room,Topic,Profile,Message
+from . models import Room,Topic,Profile,Message,Post,User
 import uuid
 from django.conf import settings
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate,login
-from . forms import RoomForm
+from django.contrib.auth import authenticate,login,logout
+from . forms import PostForm, RoomForm,UserForm
+from django.db.models import Q
 
 # Create your views here.
 
-def Home(request):
-    rooms = Room.objects.all()[0:5]
+###HOme####
 
-    context = {'rooms' : rooms}
-    return render(request,'base/Home.html',context)
-    
+
+
+def Home(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+    )
+
+    topics = Topic.objects.all()[0:5]
+    room_count = rooms.count()
+    room_messages = Message.objects.filter(
+        Q(room__topic__name__icontains=q))[0:3]
+
+    context = {'rooms': rooms, 'topics': topics,
+               'room_count': room_count, 'room_messages': room_messages}
+    return render(request, 'base/Home.html', context)
+ 
+    return render(request, 'base/Home.html')
+
+######   Authentication #######
+
+
+
 def LoginPage(request):
-        if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect('Home')
+
+    if request.method == 'POST':
             username = request.POST.get('username')
             email = request.POST.get('email')
             password1 = request.POST.get('password')
@@ -38,15 +64,17 @@ def LoginPage(request):
                 messages.error(request,'Your account  is not verified')
                 return redirect('login_page')
             
-            if authenticate(username=username,pasword1=password1) is None:
+            if authenticate(username=username,password=password1) is None:
                 messages.error(request,'check your password and email')
                 return redirect('login_page')
             else:
                 login(request,user)
-                return redirect('home')
-        return render(request,'base/login.html' )
+                return redirect('Home')
+    return render(request,'base/login.html' )
 
 def RegisterPage(request):
+    if request.user.is_authenticated:
+        return redirect('Home')
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -56,14 +84,14 @@ def RegisterPage(request):
 
         if password1 != password2:
             messages.error(request,"Password1 and Password2 doesn't match")
-            return redirect('register')
+            return redirect('register_page')
         try:
              if User.objects.filter(username=username).first():
                     messages.error(request,"Username is already taken")
-                    return redirect('registerPage')
+                    return redirect('register_page')
              if User.objects.filter(email=email).first():
                     messages.error(request,"Email has been already used")
-                    return redirect('registerPage')
+                    return redirect('register_page')
              user_obj = User.objects.create(username=username,email=email)
              user_obj.set_password(password1)
              user_obj.save()
@@ -76,14 +104,20 @@ def RegisterPage(request):
              return redirect('token')
         except Exception as E:
             print(E)
-    return render(request,'base/register.html' )
+    return render(request,'base/register.html')
 
+
+def logoutPAGE(request):
+    
+        logout(request)
+        return redirect('Home')
 
 def SuccessPage(request):
     return render(request,'base/success.html')
 
 def TokenPage(request):
     return render(request,'base/token.html')
+
 
 def SendEmailAfterRegistration(email,token):
     subject = 'Thankyou for creating an account.'
@@ -114,52 +148,8 @@ def ErrorPage(request):
 
 
 
-
-    
-def ResetPassword(request,auth_token):
-    if request.method == 'POST':
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('passsword2')
-        if password1 == password2:
-                profile_object = Profile.objects.filter(auth_token=auth_token)
-                if profile_object is None:
-                    return redirect('error')
-                else:
-                    profile_object.user.set_password(password1)
-                    profile_object.user.save()
-                    return redirect('login_page')
-        else:
-            messages.error(request,"Your password doesn't match")
-            return redirect('ResetPassword')
-        
-
-    return render(request,'base/Reset_password.html')
-
-def SendMailToResetPaasword(email,token):
-    subject = 'Reset Your password.'
-    message = f'Reset password  by clicking link  http://127.0.0.1:8000/ResetPassword/{token}'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [email]
-    send_mail(subject, message , email_from ,recipient_list)
-
-def ForgetPassword(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        user  = User.objects.filter(email=email)
-        if user is  None:
-            messages.error(request,'Email not found')
-            return redirect('forgetpassword')
-        else:
-           auth_token = str(uuid.uuid4())
-           SendEmailAfterRegistration(email,auth_token)
-           profile_object = Profile.objects.filter(user__email=email)
-           if profile_object is not None:
-                profile_object.auth_token = auth_token
-                
-                return redirect('success')
-           
-    return render(request,'base/Forgetpassword.html')   
-        
+ 
+   
 ###################### End of email login and register ######################################
 
 
@@ -244,18 +234,84 @@ def DeleteMessage(request,pk):
         return redirect('Home',)
     return render(request,'base/delete.html' , {'obj' : message})
 
+def updateUser(request):
+    user = request.user
+    form = UserForm(instance=user)
 
-def userProfile(request,pk):
-    user = user.objects.get(id=pk)
-    room = user.room_set.all()
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+
+    return render(request, 'base/update-user.html', {'form': form})
+
+
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
     room_messages = user.message_set.all()
-    topics = Topic.object.all()
-
-    context = {'room':room, 'room_messages' : room_messages , 'topics' : topics  , 'user' : user}
-
-    return render(request,'base/profile.html' , context)
+    topics = Topic.objects.all()
+    context = {'user': user, 'rooms': rooms,
+               'room_messages': room_messages, 'topics': topics}
+    return render(request, 'base/profile.html', context)
 
 def add_profile(request):
      pass
 
+'''def LikeView(request,pk):
+    post = get_object_or_404(Post,id=request.post.get('post_id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('Home',args=[str(pk)]))  
+'''
+def Create_Post(request):
+    form = PostForm()
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        author = request.user
+        post = Post.objects.create(body=body,author=author)
+        
+        redirect('Home')
+    return render(request,'base/create_post.html',{'form' : form })
 
+def Update_Post(request,pk):
+    post = Post.objects.get(id=pk)
+    form = PostForm(instance=post)
+    if request.user !=  post.author:
+        messages.error(request,"You're not allowed")
+        return redirect('error')
+    if request.method == 'POST':
+        post.body = request.POST.get('body') 
+        post.save()
+        return redirect('Home')
+
+    return render(request,'base/update_post.html' , {'form' : form})
+
+def Delete_Post(request,pk):
+    post = Post.objects.get(id=pk)
+    if request.user != post.author:
+        messages.error(request,"You're not allowed to delete this room")
+        return redirect('error')
+    
+    if request.method == 'POST':
+        post.delete()
+        return redirect('Home')
+    return render(request,'base/delete.html',{'obj' : room})
+###post ######
+
+
+
+### user profile###########
+
+def UpdateProfile(request):
+    pass
+
+def topicsPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    return render(request, 'base/topics.html', {'topics': topics})
+
+
+def activityPage(request):
+    room_messages = Message.objects.all()
+    return render(request, 'base/activity.html', {'room_messages': room_messages})

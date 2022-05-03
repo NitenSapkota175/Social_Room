@@ -42,6 +42,100 @@
 //   });
 // }
 
+// for opening the comment section
+document.getElementById("openComment").onclick = function() {
+  myFunction("commentOpen");
+}
+
+function myFunction(p1)
+{
+  console.log(p1)
+  var open = document.getElementById(p1);
+  if(open.style.display === 'none')
+  {
+    open.style.display = "block";
+  }
+  else
+  {
+    open.style.display = "none";
+  }
+}
+
+
+//for closing the comment section
+document.getElementById('delete').onclick = function () {
+  myDeleteFunction("commentOpen");
+}
+
+function myDeleteFunction(p2)
+{
+  console.log(p2);
+  var close = document.getElementById(p2);
+
+  if(close.style.display === "block")
+  {
+    close.style.display = 'none';
+  }
+  else
+  {
+    close.style.display = " block";
+  }
+}
+
+
+//for the like and dislike
+let likebtn = document.querySelector('#likePic');
+let dislikebtn = document.querySelector('#dislikePic');
+let input1 = document.querySelector('#number1');
+let input2 = document.querySelector('#number2');
+
+likebtn.addEventListener('click', ()=>{
+  input1.value = parseInt(input1.value) + 1;
+  input1.style.color = "white";
+});
+
+dislikebtn.addEventListener('click', ()=>{
+   input2.value = parseInt(input2.value) + 1;
+   input2.style.color = "white";
+});
+
+
+
+
+// taking inputtext from input and appending it to the li and appending li to the ul which is already inside the list-comment
+
+document.getElementById('addItem').addEventListener('click', () => {
+  var input = document.getElementById('inputText');
+  var inputData = input.value.split('\n');
+  var listContainer = document.getElementById('list');
+  var listData = document.createElement('ul');
+  listContainer.appendChild(listData);
+
+  var numberOfInput = inputData.length;
+  var listItem;
+
+  //if input field is empty it will alret you 
+  if(input.value === '')
+  {
+    alert('Write Something....');
+  }
+  else if(input.value === ' ')
+  {
+    alert('Write Something....');
+  }
+  //and if input does contains some values then it will added in the below section
+  else{
+    for(var i = 0; i < numberOfInput; i++)
+    {
+    listItem = document.createElement('li');
+    listItem.appendChild(document.createTextNode(input.value));
+    listItem.style.listStyle = "none";
+    listData.appendChild(listItem);
+    }
+    document.getElementById('inputText').value = ' ';
+  }
+});
+
 // Menu
 
 const dropdownMenu = document.querySelector(".dropdown-menu");

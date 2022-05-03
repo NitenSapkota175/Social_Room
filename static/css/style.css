@@ -1744,3 +1744,295 @@ label {
 .loginbttm {
   padding: 0px;
 }
+
+
+.roomList__header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 2.4rem;
+}
+
+/* ================  mainpage  ==================== */
+.topnav{
+  display: flex;
+  gap: 38rem;
+  background-color: var(--color-dark);
+  padding: 1.5rem;
+}
+.leftbar{
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  color: #ECF0F5;
+}
+
+.leftbar img{
+  height: 3.5rem;
+  width: 3.5rem;
+} 
+
+.searchbar{
+  display: flex;
+  align-items: center;
+}
+
+.header-main{
+  position: relative;
+}
+
+.conatiner-main{
+  background-color: var(--color-bg);
+  color: rgb(240, 240, 240);
+  display: flex;
+  gap: 3rem;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 2rem;
+  position: relative;
+}
+
+ .col-first{
+  /* border: 1px solid yellow; */
+  width: 30%;
+  display: flex;
+  position: sticky;
+  top: 10%;
+  justify-content: center;
+}
+
+.col-second{
+  /* border: 1px solid #0DB8DE; */
+  width: 40%;
+}
+.col-second a{
+  text-decoration: none;
+}
+
+.col-third{
+  /* border: 1px solid #fc4b0b; */
+  width: 30%;
+  display: flex;
+  position: sticky;
+  top: 10%;
+  justify-content: center;
+  padding: 0rem 3.2rem 0rem 3.2rem;
+} 
+
+.btn-browser{
+  border: 3px solid #5dd693;
+  border-radius: 1.2rem;
+  background-color: var(--color-dark-medium);
+  color: #ECF0F5;
+  padding: 0.6rem;
+}
+
+.photo-container{
+  border-radius: 1.2rem;
+  padding: 2rem;
+  background-color: #525471;
+  margin-bottom: 2rem;
+}
+
+.photo-section{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.activities__boxHeader-photo a{
+  padding: 1.2rem;
+}
+
+.pic {
+  background-color: #6c6e8a;
+  padding: 1.2rem;
+  border-radius: 1.2rem;
+}
+.like-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rem;
+}
+
+.like-section img{
+  height: 2.5rem;
+  width: 2.5rem; 
+  -webkit-filter: grayscale(1) invert(1);
+  filter: grayscale(1) invert(1);
+}
+.like input{
+  gap: 1.2rem;
+  width: 3rem;
+  height: 2.2rem;
+  text-align: center;
+  pointer-events:none;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.dislike input{
+  gap: 1.2rem;
+  width: 3rem;
+  height: 2.2rem;
+  text-align: center;
+  pointer-events: none;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 1350px) {
+  .topnav{
+    gap: 28rem;
+  }
+  .like-section {
+    gap: 16rem;
+  }
+}
+@media screen and (max-width: 1140px) {
+  .topnav{
+    gap: 25rem;
+  }
+  .like-section {
+    gap: 15rem;
+  }
+  .like input{
+    gap: 0.5rem;
+    width: 3rem;
+  }
+}
+
+@media screen and (max-width: 1040px) {
+  .topnav{
+    gap: 23rem;
+  }
+
+  .like-section {
+    gap: 15rem;
+  }
+  .like input{
+    gap: 0.5rem;
+    width: 2rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .topnav{
+    gap: 20rem;
+  }
+
+  .like-section {
+    gap: 15rem;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .topnav{
+    gap: 16rem;
+  }
+  .conatiner-main{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .col-second{
+    /* border: 1px solid #0DB8DE; */
+    width: 80%;
+  }
+  .like-section {
+    gap: 18rem;
+  }
+}
+@media screen and (max-width: 900px) {
+  .topnav{
+    gap: 10rem;
+  }
+  .like-section {
+    gap: 17rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .topnav{
+    gap: 8rem;
+  }
+  .searchbar{
+    display: none;
+  }
+  .like-section {
+    gap: 15rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .topnav{
+    gap: 6rem;
+  }
+  .searchbar{
+    display: none;
+  }
+  .like-section {
+    gap: 10rem;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .topnav{
+    gap: 6rem;
+  }
+  .searchbar{
+    display: none;
+  }
+  .like-section {
+    gap: 9rem;
+  }
+  #inputText{
+    width: 32rem;
+  }
+  .roomlist-list{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .topnav{
+    gap: 6rem;
+  }
+  .searchbar{
+    display: none;
+  }
+  .like-section {
+    gap: 8rem;
+  }
+  #inputText{
+    width: 30rem;
+  }
+  .roomlist-list{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .topnav{
+    gap: 6rem;
+  }
+  .searchbar{
+    display: none;
+  }
+  .like-section {
+    gap: 6rem;
+  }
+  #inputText{
+    width: 26rem;
+  }
+  .roomlist-list{
+    display: none;
+  }
+}
+
+/* ================  mainpage  ==================== */

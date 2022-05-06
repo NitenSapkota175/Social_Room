@@ -2,12 +2,12 @@ import profile
 from tkinter import EXCEPTION
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
-
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from rx import create
 from django.urls import reverse,reverse_lazy
 from tables import Description
-from . models import Room,Topic,Profile,Message,Post,User
+from . models import Room,Topic,Message,Post,User
 import uuid
 from django.conf import settings
 from django.core.mail import send_mail
@@ -34,11 +34,12 @@ def Home(request):
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]
 
+    posts = Post.objects.all()
     context = {'rooms': rooms, 'topics': topics,
-               'room_count': room_count, 'room_messages': room_messages}
+               'room_count': room_count, 'room_messages': room_messages,'posts' : posts}
     return render(request, 'base/Home.html', context)
  
-    return render(request, 'base/Home.html')
+   
 
 ######   Authentication #######
 
@@ -58,19 +59,49 @@ def LoginPage(request):
                 messages.error(request,'User not found')
                 return redirect('login_page')
             
-            
-            profile_object = Profile.objects.filter(user = user).first()
-            if not profile_object.is_verified:
-                messages.error(request,'Your account  is not verified')
-                return redirect('login_page')
-            
-            if authenticate(username=username,password=password1) is None:
-                messages.error(request,'check your password and email')
-                return redirect('login_page')
-            else:
+            if user.is_superuser:
                 login(request,user)
                 return redirect('Home')
-    return render(request,'base/login.html' )
+
+            
+            else : 
+                
+                if not user.is_verified:
+                     messages.error(request,'Your account  is not verified')
+                     return redirect('login_page')
+            
+                if authenticate(username=username,password=password1) is None:
+                    messages.error(request,'check your password and email')
+                    return redirect('login_page')
+                else:
+                     login(request,user)
+                     return redirect('Home')
+
+    return render(request,'base/login.html')
+
+def SendEmailAfterRegistration(email,token):
+    subject = 'Thankyou for creating an account.'
+    message = f'verify your account by clicking link  http://127.0.0.1:8000/verify/{token}'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message , email_from ,recipient_list)
+
+def verify(request,auth_token):
+
+ try:
+        user = User.objects.filter(auth_token=auth_token).first()
+        if user:
+            if user.is_verified:
+                messages.success(request,'Your account is already verified')
+                return redirect('login_page')
+            user.is_verified = True
+            user.save()
+            messages.success(request, 'Your email had been register.')
+            return redirect('login_page')
+        else:
+            return redirect('error')
+ except Exception as p:
+     print(p)
 
 def RegisterPage(request):
     if request.user.is_authenticated:
@@ -92,13 +123,10 @@ def RegisterPage(request):
              if User.objects.filter(email=email).first():
                     messages.error(request,"Email has been already used")
                     return redirect('register_page')
-             user_obj = User.objects.create(username=username,email=email)
+             auth_token = str(uuid.uuid4())
+             user_obj = User.objects.create(username=username,email=email,auth_token=auth_token)
              user_obj.set_password(password1)
              user_obj.save()
-             auth_token = str(uuid.uuid4())
-             profile_object = Profile.objects.create(user = user_obj,auth_token = auth_token)
-             profile_object.save()
-
              SendEmailAfterRegistration(email,auth_token)
              
              return redirect('token')
@@ -119,29 +147,7 @@ def TokenPage(request):
     return render(request,'base/token.html')
 
 
-def SendEmailAfterRegistration(email,token):
-    subject = 'Thankyou for creating an account.'
-    message = f'verify your account by clicking link  http://127.0.0.1:8000/verify/{token}'
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [email]
-    send_mail(subject, message , email_from ,recipient_list)
 
-def verify(request,auth_token):
-
- try:
-        profile_object = Profile.objects.filter(auth_token=auth_token).first()
-        if profile_object:
-            if profile_object.is_verified:
-                messages.success(request,'Your account is already verified')
-                return redirect('login_page')
-            profile_object.is_verified = True
-            profile_object.save()
-            messages.success(request, 'Your email had been register.')
-            return redirect('login_page')
-        else:
-            return redirect('error')
- except Exception as p:
-     print(p)
 
 def ErrorPage(request):
     return render(request,'base/error.html')
@@ -154,7 +160,7 @@ def ErrorPage(request):
 
 
 # CRUD ROOM OPERATIONS ################################
-
+@login_required(login_url='login_page')
 def CreateRoom(request):
     form = RoomForm()
     topics = Topic.objects.all()
@@ -191,7 +197,7 @@ def room(request,pk):
         context = {'room' : room,'room_messages' : room_messages ,'participants': participants }
         return  render(request,'base/room.html',context)
 
-
+@login_required(login_url='login_page')
 def UpdateRoom(request,pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
@@ -211,6 +217,7 @@ def UpdateRoom(request,pk):
     context = {'form' : form , 'room' : room,'topics' : topics}
     return render(request,'base/room_form.html',context)
 
+@login_required(login_url='login_page')
 def DeleteRoom(request,pk):
     room = Room.objects.get(id=pk)
     if request.user != room.host:
@@ -223,6 +230,7 @@ def DeleteRoom(request,pk):
     
     return render(request,'base/delete.html',{'obj' : room})
 
+@login_required(login_url='login_page')
 def DeleteMessage(request,pk):
     message = Message.objects.get(id=pk)
 
@@ -234,6 +242,7 @@ def DeleteMessage(request,pk):
         return redirect('Home',)
     return render(request,'base/delete.html' , {'obj' : message})
 
+@login_required(login_url='login_page')
 def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
@@ -256,24 +265,21 @@ def userProfile(request, pk):
                'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
-def add_profile(request):
-     pass
 
-'''def LikeView(request,pk):
-    post = get_object_or_404(Post,id=request.post.get('post_id'))
-    post.likes.add(request.user)
-    return HttpResponseRedirect(reverse('Home',args=[str(pk)]))  
-'''
+
+
+@login_required(login_url='login_page')
 def Create_Post(request):
     form = PostForm()
     if request.method == 'POST':
-        body = request.POST.get('body')
+        body = request.POST.get('post_contain')
         author = request.user
         post = Post.objects.create(body=body,author=author)
         
         redirect('Home')
     return render(request,'base/create_post.html',{'form' : form })
 
+@login_required(login_url='login_page')
 def Update_Post(request,pk):
     post = Post.objects.get(id=pk)
     form = PostForm(instance=post)
@@ -287,6 +293,7 @@ def Update_Post(request,pk):
 
     return render(request,'base/update_post.html' , {'form' : form})
 
+@login_required(login_url='login_page')
 def Delete_Post(request,pk):
     post = Post.objects.get(id=pk)
     if request.user != post.author:
@@ -313,5 +320,5 @@ def topicsPage(request):
 
 
 def activityPage(request):
-    room_messages = Message.objects.all()
+    room_messages = Message.objects.order_by('-created')
     return render(request, 'base/activity.html', {'room_messages': room_messages})

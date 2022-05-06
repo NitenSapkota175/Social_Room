@@ -14,19 +14,14 @@ class User(AbstractUser):
 
     avatar = models.ImageField(null=True, default="avatar.svg")
 
+    is_verified = models.BooleanField(default=False)
+    auth_token = models.CharField(max_length = 100,null=True)
     #USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
 
 
-class Profile(models.Model):
-    user= models.OneToOneField(User,on_delete=models.CASCADE)
-    auth_token = models.CharField(max_length = 100)
-    created = models.DateTimeField(auto_now_add=True)
-    is_verified = models.BooleanField(default=False)
-    
-    def __str__(self):
-        return self.user.email
+
 
 class Topic(models.Model):
     name =models.CharField(max_length=200)
@@ -57,7 +52,7 @@ class Message(models.Model):
         created = models.DateField(auto_now_add=True)
 
         class Meta:
-            ordering = ['-updated' ,'-created']
+            ordering = ['updated' ,'created']
 
         def __str__(self):
             return self.body[0:50]
@@ -87,5 +82,4 @@ class comment(models.Model):
      comment = models.TextField ()
      post = models.ForeignKey(Post,on_delete=models.CASCADE)
      created = models.DateField(default=timezone.now)
-     commentlikes = models.ManyToManyField(User,blank=True,related_name ='commentlikes')
-     commentdislikes = models.ManyToManyField(User,blank=True,related_name ='commentdislikes')
+   

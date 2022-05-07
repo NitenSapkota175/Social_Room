@@ -3,7 +3,7 @@
     <div class="container">
         <a href="{% url 'Home' %}" class="header__logo">
             <img src="{% static 'images/logo.svg' %}" />
-            <h1>Pointers</h1>
+            <h1>StudyBuddy</h1>
         </a>
         <form class="header__search" method="GET" action="{% url 'Home' %}">
             <label>
@@ -38,7 +38,6 @@
             {% else %}
 
             <!-- Not Logged In -->
-           
             <a href="{% url 'login_page' %}">
                 <img src="{% static 'images/avatar.svg' %}" />
                 <p>Login</p>
@@ -71,4 +70,11 @@
 </header>
 
 
+
+<!-- {% if request.user.is_authenticated %}
+<p>Hello {{request.user}}</p>
+<a href="{% url 'logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %} -->
 

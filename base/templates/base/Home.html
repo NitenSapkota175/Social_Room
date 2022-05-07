@@ -34,12 +34,20 @@
               <p>{{room_count}}</p>
             </div>
 
-             <a class="btn--image" href="{%url 'create_post' %}">
-              <img src="images/icons/post.png" alt="">
+             <a class="btn--image" href="{%url 'create_post' %}"> 
+                 
+                 //this href link will take you to post.html, there you will see the option to upload status,photo etc
+              
+                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <title>add</title>
+                <path
+                  d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
+                ></path>
+              </svg>
               POST
             </a>
 
-            <a class="btn btn--main" href="{%url 'Create_room' %}">
+            <a class="btn btn--main" href="{%url 'Create_room' %}"> 
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                 <title>add</title>
                 <path

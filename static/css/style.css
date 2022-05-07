@@ -14,6 +14,9 @@
   --color-error: #fcc00b;
 }
 
+
+
+
 /*========== base styles ==========*/
 
 * {
@@ -244,6 +247,9 @@ a {
   .post-button button{
     width: 55rem;
   }
+  .roomlistcomment input{
+    width: 38rem;
+  }
 }
 
 @media only screen and (max-width: 550px ) {
@@ -252,6 +258,13 @@ a {
   }
   .post-button button{
     width: 50rem;
+  }
+
+  .roomlistcomment input{
+    width: 30rem;
+  }
+  .layout > .container {
+    display:inline-flex;
   }
 }
 
@@ -262,6 +275,13 @@ a {
   .post-button button{
     width: 40rem;
   }
+  .roomlistcomment input{
+    width: 28rem;
+  }
+  .layout > .container {
+    display:inline-flex;
+    align-items: center;
+  }
 }
 @media only screen and (max-width: 380px ) {
   .post-text input {
@@ -269,6 +289,13 @@ a {
   }
   .post-button button{
     width: 35rem;
+  }
+  .roomlistcomment input{
+    width: 25rem;
+  }
+  .layout > .container {
+    display:inline-flex;
+    align-items: center;
   }
 }
 @media only screen and (max-width: 340px ) {
@@ -278,9 +305,73 @@ a {
   .post-button button{
     width: 32rem;
   }
+  .roomlistcomment input{
+    width: 25rem;
+  }
+  .layout > .container {
+    display:inline-flex;
+    align-items: center;
+  }
 }
 
 /* post styling ends */
+
+
+/* like and comments */
+.image-cut img{
+  height: 2rem;
+  width: 2rem;
+  -webkit-filter: invert(100%); /* Safari/Chrome */
+    filter: invert(100%);
+}
+
+.roomListRoom__button{
+  background-color: transparent;
+  border: 0;
+  color: #b2bdbd;
+}
+.roomListRoom__button:hover{
+  text-decoration: underline;
+}
+
+.roomlistcomment{
+  display: inline-block;
+  padding: 0.5rem;
+}
+
+.roomlistcomment-btn{
+  display: inline-flex;
+  gap: 1rem;
+  padding: 1rem 0rem 0rem 0rem;
+}
+.roomlistcomment-btn button{
+  background-color: var(--color-main);
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.roomlistcomment input{
+  background-color: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  width: 40rem;
+  height: 4rem;
+}
+.roomlistcomment input:focus{
+  outline: none;
+  color: white;
+}
+.roomlistcomment input::placeholder{
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+
+
+/* like and comments styling ends here */
+
 .action-button {
   background: transparent;
   border: none;
@@ -474,28 +565,6 @@ a {
   color: var(--color-light);
 }
 
-@media screen and (max-width: 800px) {
-  .header__search input {
-    width: 20rem;
-  }
-
-  .header > .container {
-    gap: 3rem;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .header__logo h1 {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .header__search {
-    display: none;
-  }
-}
-
 .header__menu {
   margin-left: auto;
   position: relative;
@@ -551,7 +620,7 @@ a {
 }
 
 .layout > .container {
-  display: flex;
+  display:flex;
   justify-content: space-between;
   align-items: flex-start;
 }
@@ -582,14 +651,14 @@ a {
   width: 90%;
   max-width: 48rem;
   min-height: 40rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -46%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-dark);
-  border-radius: 1rem;
-  box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  border-radius: 12px;
+  margin-top: 50px;
+  margin-left: 450px;
 }
 
 .layout__boxHeader {
@@ -765,84 +834,6 @@ a {
   display: block;
 }
 
-@media screen and (max-width: 500px) {
-  .mobile-menu .header__search {
-    display: block;
-    margin-bottom: 2.4rem;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .mobile-menu .header__search {
-    display: block;
-    margin-bottom: 2rem;
-  }
-  .header__search{
-    width: 42rem;
-  }
-
-  .mobile-menuItems{
-    width: 42rem;
-  }
-  .roomList__header{
-    width: 42rem;
-  }
-  .roomListRoom{
-    width: 42rem;
-  }
-  .roomlistcomment input{
-    width: 30rem;
-  }
-}
-@media screen and (max-width: 400px) {
-  .mobile-menu .header__search {
-    display: block;
-    margin-bottom: 2rem;
-  }
-  .header__search{
-    width: 39rem;
-  }
-  .mobile-menuItems{
-    width: 39rem;
-  }
-  .roomList__header{
-    width: 39rem;
-  }
-  .roomListRoom{
-    width: 39rem;
-  }
-
-  .roomlistcomment input{
-    width: 28rem;
-  }
-}
-
-@media screen and (max-width: 380px) {
-  .mobile-menu .header__search {
-    display: block;
-    margin-bottom: 1.8rem;
-  }
-  .header__search{
-    width: 36rem;
-  }
-  .mobile-menuItems{
-    width: 36rem;
-  }
-  .roomList__header{
-    width: 36rem;
-  }
-  .roomListRoom{
-    width: 36rem;
-  }
-  .roomlistcomment input{
-    width: 26rem;
-  }
-
-}
-/*==============================
-=>  Room List
-================================*/
-
 /*==============================
 =>  Room List
 ================================*/
@@ -953,229 +944,6 @@ a {
   font-weight: 500;
   font-size: 1.3rem;
 }
-
-
-
-/* post styling */
-
-
-.roomlist-post{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 1rem 1rem 10rem;
-
-}
-
-.post{
-  display: inline-block;
-  gap: 4rem;
-}
-
-.post-img{
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0rem 0rem 2rem 0rem;
-}
-
-.post-img img{
-  border-radius: 50px;
-  border: 0.2rem solid var(--color-main);
-  height: 4.4rem;
-  width: 4.4rem;
-}
-
-.post-text{
- display: inline-flex;
- gap: 0.3rem;
-}
-
-.post-text img{
-  background-color: var(--color-main);
-  padding: 1rem;
-  height: 6rem;
-  width: 6rem;
-  border-radius: 0.3rem;
-}
-
-.post-text input{
-  height: 10rem;
-  width: 60rem;
-  background-color: #ceced2;
-  border: 0;
-  border-radius: 3px;
-}
-
-.post-text input::placeholder{
-  position: absolute;
-  top: 0.2rem;
-  left: 0.2rem;
-}
-
-.post-select ul li{
-   list-style: none;
-   padding: 2rem 0rem 2rem 0rem;
-   font-size: 1.7rem;
-}
-
-.post-select-ul li{
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
-.post-select-ul li img{
-    -webkit-filter: invert(100%); /* Safari/Chrome */
-    filter: invert(100%);
-  height: 3.2rem;
-  width: 3.2rem;
-}
-
-.post-button{
-  padding: 1rem 0rem 0rem 0rem;
-}
-
-.post-button button{
-  background-color: var(--color-main);
-  color: white;
-  border: 0;
-  border-radius:0.1rem;
-  padding: 1rem 1rem 1rem 1rem;
-  width: 60rem;
-}
-
-@media only screen and (max-width: 950px ) {
-  .post-text input {
-    width: 55rem;
-  }
-  .post-button button{
-    width: 55rem;
-  }
-  .roomlistcomment input{
-    width: 38rem;
-  }
-}
-
-@media only screen and (max-width: 550px ) {
-  .post-text input {
-    width: 50rem;
-  }
-  .post-button button{
-    width: 50rem;
-  }
-
-  .roomlistcomment input{
-    width: 30rem;
-  }
-  .layout > .container {
-    display:inline-flex;
-  }
-}
-
-@media only screen and (max-width: 450px ) {
-  .post-text input {
-    width: 40rem;
-  }
-  .post-button button{
-    width: 40rem;
-  }
-  .roomlistcomment input{
-    width: 28rem;
-  }
-  .layout > .container {
-    display:inline-flex;
-    align-items: center;
-  }
-}
-@media only screen and (max-width: 380px ) {
-  .post-text input {
-    width: 35rem;
-  }
-  .post-button button{
-    width: 35rem;
-  }
-  .roomlistcomment input{
-    width: 25rem;
-  }
-  .layout > .container {
-    display:inline-flex;
-    align-items: center;
-  }
-}
-@media only screen and (max-width: 340px ) {
-  .post-text input {
-    width: 32rem;
-  }
-  .post-button button{
-    width: 32rem;
-  }
-  .roomlistcomment input{
-    width: 25rem;
-  }
-  .layout > .container {
-    display:inline-flex;
-    align-items: center;
-  }
-}
-
-/* post styling ends */
-
-
-/* like and comments */
-.image-cut img{
-  height: 2rem;
-  width: 2rem;
-  -webkit-filter: invert(100%); /* Safari/Chrome */
-    filter: invert(100%);
-}
-
-.roomListRoom__button{
-  background-color: transparent;
-  border: 0;
-  color: #b2bdbd;
-}
-.roomListRoom__button:hover{
-  text-decoration: underline;
-}
-
-.roomlistcomment{
-  display: inline-block;
-  padding: 0.5rem;
-}
-
-.roomlistcomment-btn{
-  display: inline-flex;
-  gap: 1rem;
-  padding: 1rem 0rem 0rem 0rem;
-}
-.roomlistcomment-btn button{
-  background-color: var(--color-main);
-  border: 0;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-}
-
-.roomlistcomment input{
-  background-color: transparent;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  width: 40rem;
-  height: 4rem;
-}
-.roomlistcomment input:focus{
-  outline: none;
-  color: white;
-}
-.roomlistcomment input::placeholder{
-  padding-top: 0.5rem;
-  padding-left: 0.5rem;
-}
-
-
-
-/* like and comments styling ends here */
 
 /*==============================
 =>  Activities
@@ -1356,16 +1124,6 @@ a {
   border-radius: 0.7rem;
   overflow: hidden;
   position: relative;
-}
-
-@media screen and (max-width: 900px) {
-  .participants {
-    display: none;
-  }
-
-  .layout--2 > .container > div:first-child {
-    flex-basis: 100%;
-  }
 }
 
 .room__top,
@@ -1615,132 +1373,191 @@ a {
   font-weight: 1.4rem;
 }
 
-
-/*  login */
-body {
-  background: #222D32;
-  font-family: 'Roboto', sans-serif;
+.list-comment ul 
+{
+  padding: 1rem 0rem 1rem 0rem;
+}
+.list-comment ul li{
+  list-style: none;
 }
 
-.login-box {
-  margin-top: 75px;
-  height: auto;
-  background: #1A2226;
-  text-align: center;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+.layout__body .form input{
+  width: 40rem;
 }
 
-.login-key {
-  height: 100px;
-  font-size: 80px;
-  line-height: 100px;
-  background: -webkit-linear-gradient(#27EF9F, #0DB8DE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.layout__boxHeader {
+  display: flex;
+  align-items: center;
+  gap: 20rem;
 }
 
-.login-title {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 30px;
-  letter-spacing: 2px;
-  margin-top: 15px;
-  font-weight: bold;
-  color: #ECF0F5;
+
+/* media query */
+@media screen and (max-width: 1400px) {
+  .layout__box {
+    margin-left: 300px;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .layout__box {
+    margin-left: 300px;
+  }
 }
 
-.login-form {
-  margin-top: 25px;
-  text-align: left;
+@media screen and (max-width: 1000px) {
+  .layout__box {
+    margin-left: 250px;
+  }
 }
 
-input[type=text] {
-  background-color: #1A2226;
-  border: none;
-  border-bottom: 2px solid #0DB8DE;
-  border-top: 0px;
-  border-radius: 0px;
-  font-weight: bold;
-  outline: 0;
-  margin-bottom: 20px;
-  padding-left: 0px;
-  color: #ECF0F5;
+@media screen and (max-width: 900px) {
+  .participants {
+    display: none;
+  }
+
+  .layout--2 > .container > div:first-child {
+    flex-basis: 100%;
+  }
+  .layout__box {
+    margin-left: 100px;
+  }
 }
 
-input[type=password] {
-  background-color: #1A2226;
-  border: none;
-  border-bottom: 2px solid #0DB8DE;
-  border-top: 0px;
-  border-radius: 0px;
-  font-weight: bold;
-  outline: 0;
-  padding-left: 0px;
-  margin-bottom: 20px;
-  color: #ECF0F5;
+@media screen and (max-width: 800px) {
+  .header__search input {
+    width: 20rem;
+  }
+
+  .header > .container {
+    gap: 3rem;
+  }
+  .layout__box {
+    margin-left: 90px;
+  }
 }
 
-.form-group {
-  margin-bottom: 40px;
-  outline: 0px;
+@media screen and (max-width: 700px) {
+  .header__logo h1 {
+    display: none;
+  }
+  .layout__box {
+    margin-left: 80px;
+  }
 }
 
-.form-control:focus {
-  border-color: inherit;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border-bottom: 2px solid #0DB8DE;
-  outline: 0;
-  background-color: #1A2226;
-  color: #ECF0F5;
+@media screen and (max-width: 600px) {
+  .header__logo h1 {
+    display: none;
+  }
+  .layout__box {
+    margin-left: 40px;
+  }
 }
 
-input:focus {
-  outline: none;
-  box-shadow: 0 0 0;
+
+@media screen and (max-width: 500px) {
+  .header__search {
+    display: none;
+  }
+  .mobile-menu .header__search {
+    display: block;
+    margin-bottom: 2.4rem;
+  }
+  .layout__box {
+    margin-left: 20px;
+  }
+  .layout__body .form input{
+    width: 30rem;
+  }
 }
 
-label {
-  margin-bottom: 0px;
+@media screen and (max-width: 450px) {
+  .mobile-menu .header__search {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  .header__search{
+    width: 42rem;
+  }
+
+  .mobile-menuItems{
+    width: 42rem;
+  }
+  .roomList__header{
+    width: 42rem;
+  }
+  .roomListRoom{
+    width: 42rem;
+  }
+  .roomlistcomment input{
+    width: 30rem;
+  }
+
+  .layout__box {
+    margin-left: 20px;
+  }
+  .layout__body .form input{
+    width: 30rem;
+  }
+}
+@media screen and (max-width: 400px) {
+  .header__search {
+    display: none;
+  }
+  .mobile-menu .header__search {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  .header__search{
+    width: 39rem;
+  }
+  .mobile-menuItems{
+    width: 39rem;
+  }
+  .roomList__header{
+    width: 39rem;
+  }
+  .roomListRoom{
+    width: 39rem;
+  }
+
+  .roomlistcomment input{
+    width: 28rem;
+  }
+
+  .layout__box {
+    margin-left: 20px;
+  }
+  .layout__body .form input{
+    width: 30rem;
+  }
 }
 
-.form-control-label {
-  font-size: 10px;
-  color: #6C6C6C;
-  font-weight: bold;
-  letter-spacing: 1px;
+@media screen and (max-width: 350px) {
+  .mobile-menu .header__search {
+    display: block;
+    margin-bottom: 1.8rem;
+  }
+  .header__search{
+    width: 36rem;
+  }
+  .mobile-menuItems{
+    width: 36rem;
+  }
+  .roomList__header{
+    width: 36rem;
+  }
+  .roomListRoom{
+    width: 36rem;
+  }
+  .roomlistcomment input{
+    width: 26rem;
+  }
+  .layout__box {
+    margin-left: 10px;
+  }
+  .layout__body .form input{
+    width: 25rem;
+  }
 }
-
-.btn-outline-primary {
-  border-color: #0DB8DE;
-  color: #0DB8DE;
-  border-radius: 0px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.btn-outline-primary:hover {
-  background-color: #0DB8DE;
-  right: 0px;
-}
-
-.login-btm {
-  float: left;
-}
-
-.login-button {
-  padding-right: 0px;
-  text-align: right;
-  margin-bottom: 25px;
-}
-
-.login-text {
-  text-align: left;
-  padding-left: 0px;
-  color: #A2A4A4;
-}
-
-.loginbttm {
-  padding: 0px;
-}
+/* media query ends */

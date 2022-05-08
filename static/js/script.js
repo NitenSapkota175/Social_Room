@@ -42,6 +42,26 @@
 //   });
 // }
 
+//for delete pop up
+
+var mymodel = document.getElementById("mytoggle");
+var myBtn = document.getElementById("btn");
+var span = document.getElementsByClassName("close")[0];
+var pop = document.getElementById("popUp");
+
+
+myBtn.onclick = function() {
+   pop.style.display = "block";
+   mymodel.style.display = "none";
+}
+
+span.onclick = function() {
+  mymodel.style.display = "block";
+  pop.style.display = "none";
+}
+
+// delete pop up ends here
+
 // for opening the comment section
 document.getElementById("openComment").onclick = function() {
   myFunction("commentOpen");

@@ -167,6 +167,7 @@ if (dropdownButton) {
   });
 }
 
+
 // Upload Image
 const photoInput = document.querySelector("#avatar");
 const photoPreview = document.querySelector("#preview-avatar");
